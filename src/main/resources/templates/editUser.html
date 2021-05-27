@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>ADD Note</title>
+<link rel="stylesheet" type="text/css"
+	href="/webjars/bootstrap/css/bootstrap.min.css" />
+</head>
+
+<body
+	style="background-position: center; height: 100%; background-repeat: no-repeat; background-size: cover; background-image: url('https://i.pinimg.com/originals/0a/fd/29/0afd2951b10413352a363ea51b4606ac.jpg')">
+	<div class="container text-center">
+		<div>
+			<h1>Take Note</h1>
+
+		</div>
+
+		<form th:action="@{/take_notes}" method="post"
+			style="max-width: 600px; margin: 0 auto" th:object="${note}">
+			<div class="m-3">
+
+				<div class="form-group row">
+					<label class="col-form-label col-4">Tiêu đề</label>
+					<div class="col-8">
+						<input type="text" class="form-control" th:field="*{tieude}" />
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-form-label col-4">Nội dung</label>
+					<div class="col-8">
+						<p>
+							<textarea style="height: 300px; width: 371px; max-width: 300"
+								class="form-control" th:field="*{noidung}"></textarea>
+						</p>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label class="col-form-label col-4">Ngày tạo note</label>
+					<div class="col-8">
+						<input type="date" class="form-control" th:field="*{ngaytao}">
+					</div>
+				</div>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary" value="/take_notes">Save</button>
+			</div>
+		</form>
+
+	</div>
+</body>
+</html>
