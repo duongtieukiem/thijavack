@@ -15,12 +15,5 @@ public class NoteService{
 		}
 		return note4.findAll();
 	}
-	
-	public void save(Notes note) {
-		note4.save(note);
-	}
-	public void delete(Long stt) {
-		note4.deleteById(stt);
-	}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 	
@@ -22,8 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class ControllerApp {
 	@Autowired
 	private UserRepository repo;
-	@Autowired
-	private UserService repo3;
 	@Autowired
 	private NoteService note2;
 	@Autowired
@@ -38,18 +37,7 @@ public class ControllerApp {
 		model.addAttribute("user", new User());
 		return "signup_form";
 	}
-	
-	@GetMapping("/takenote")
-	public String showNotes(Model model) {
-		 model.addAttribute("note", new Notes()); 
-		 return "editUser";
-	}
-	
-	@PostMapping("/take_notes") 
-	public String takeNoteSuccess(Notes note,Model model) {
-		note2.save(note);
-		return "notesuccess"; 
-	}
+
 	
 	@PostMapping("/process_register")
 	public String processRegistration(User user) {
@@ -67,38 +55,71 @@ public class ControllerApp {
 		return "users";
 	}
 	
-
 	
+	// them not( note)
+	
+	@GetMapping("/takenote")
+	public String showNotes(Model model) {
+		//trang show note(takenote.html)("note", new Notes()); 
+		model.addAttribute("note", new Notes());
+		 return "addnote";
+	}
+	
+	//save note
+	
+	@PostMapping("/take_notes") 
+	public String takeNoteSuccess(Notes notes,Model model) {
+		note.save(notes);
+		return "notesuccess"; 
+	}
+	
+
+	// show note
 	@RequestMapping("/takenotes")
 	public String viewNotes(Model model,
-			@Param("keyword")String keyword) {
+			@Param("keyword1")String keyword) {
 	List <Notes> notes = note2.listAll(keyword);  
-    model.addAttribute("takenote1", notes);  
+    model.addAttribute("takenote1", notes); 
     return "takenote"; 
 	}
 	
 
 	
-	
+	// xoa user
 	@RequestMapping("/delete/{id}")
 	public String deleteUser(@PathVariable(name ="id") Long id) {
-		repo3.delete(id);
+		repo.deleteById(id);
 		return "redirect:/";
 	}
+	
+	// xoa note theo stt
 	@RequestMapping("/deleted/{stt}")
 	public String deleteNotes(@PathVariable(name = "stt") Long stt, Model model) {
-		note2.delete(stt);
+		note.deleteById(stt);
 		List<Notes> listnote = note.findAll();
 		model.addAttribute("takenote1", listnote);
+		return "takenote";//trang show note(takenote.html)
+	}
+	//edit note
+	
+	@RequestMapping("/edit/{stt}")
+	public String showEdit(@PathVariable("stt") Long stt,Model model) {
+		model.addAttribute("note", note.findById(stt).orElse(null));
+		return "edit";
+	}
+	
+	@RequestMapping("/notes/update")
+	public String update(@Param("keyword1") String keyword,Model model,@RequestParam Long stt, @RequestParam String title, @RequestParam String content, @RequestParam String ngaytao) {
+		Notes note1 = note.findById(stt).orElse(null);
+		note1.setTieude(title);
+		note1.setNoidung(content);
+		note1.setNgaytao(ngaytao);
+		note.save(note1);
+		List<Notes> notes = note2.listAll(keyword);
+		model.addAttribute("takenote1", notes);
 		return "takenote";
 	}
-
 	
-	/*
-	 * @RequestMapping("/edit/{id}") public ModelAndView
-	 * showEditProductPage(@PathVariable(name = "id") Long id) { ModelAndView mav =
-	 * new ModelAndView("edit"); User user = repo3.get(id); mav.addObject("user",
-	 * user); return mav; }
-	 */
+	
 	
 }

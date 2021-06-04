@@ -27,6 +27,7 @@
 						<th>Content</th>
 						<th>Date</th>
 						<th></th>
+						<th>EditNote</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -35,14 +36,15 @@
 						<td th:text="${note.noidung}">Content</td>
 						<td th:text="${note.ngaytao}">Date</td>
 						<td><a th:href="@{'/deleted/' + ${note.stt}}"
-							class="btn btn-primary" style="background-color:red">Del Notes</a></td>
+							>Del Notes</a></td>
+						<td><a th:href="@{'/edit/' + ${note.stt}}" >Edit</a> </td>
 					</tr>
 				</tbody>
 			</table>
 			<div>&nbsp;</div>
 			<div>
 				<form style="margin-left: 107px" th:action="@{/takenotes}">
-					Filter: <input type="text" name="keyword" th:value="${keyword}" />
+					Filter: <input type="text" name="keyword" th:value="${keyword1}" />
 					&nbsp; <input type="submit" value="Search" /> &nbsp; <input
 						type="button" value="Clear" onclick="clearFilter()" />
 				</form>
